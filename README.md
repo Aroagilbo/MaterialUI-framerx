@@ -1,4 +1,4 @@
-# MaterialU-framerx
+# MateriaUI-framerx
 Material Components for Framer X
 
 ## Transforming class into functional components
