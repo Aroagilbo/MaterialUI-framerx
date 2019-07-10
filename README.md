@@ -14,6 +14,7 @@ To do
 
 - [x] Paper
 - [x] Typography
+- [x] Icon
 
 
 ## Adding overrides 
