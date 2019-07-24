@@ -1,33 +1,58 @@
 import * as React from "react"
-import { Frame, addPropertyControls, ControlType } from "framer"
+import {
+    Stack,
+    StackProperties,
+    addPropertyControls,
+    ControlType,
+} from "framer"
 //@ts-ignore
-import { default as MuiButton } from "@material-ui/core/Button"
+import { default as MuiButton, ButtonProps } from "@material-ui/core/Button"
+
+type Props = Partial<StackProperties> &
+    ButtonProps & {
+        text: string
+        color: any
+        size: any
+        variant: any
+    }
 
 //Create component and return it
-export function Button(props) {
+export function Button(props: Props) {
+    const {
+        style,
+        //
+        href,
+        disabled,
+        disableRipple,
+        fullWidth,
+        color,
+        size,
+        variant,
+        text,
+        ...rest
+    } = props
+
     return (
-        <Frame
-            width={props.width}
-            height={props.height}
-            style={{
-                alignItems: "center",
-                display: "flex",
-                justifyContent: "center",
-                background: "transparent",
-            }}
+        <Stack
+            {...rest}
+            alignment="center"
+            distribution="center"
+            overflow="visible"
         >
             <MuiButton
-                href={props.href}
-                disabled={props.disabled}
-                disableRipple={props.disableRipple}
-                fullWidth={props.fullWidth}
-                color={props.color}
-                size={props.size}
-                variant={props.variant}
+                {...{
+                    href,
+                    disabled,
+                    disableRipple,
+                    fullWidth,
+                    color,
+                    size,
+                    variant,
+                }}
             >
-                {props.text}
+                {text}
             </MuiButton>
-        </Frame>
+        </Stack>
     )
 }
 

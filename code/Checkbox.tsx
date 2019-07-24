@@ -1,46 +1,59 @@
 import * as React from "react"
-import { Frame, addPropertyControls, ControlType } from "framer"
-//@ts-ignore
-import { default as MuiCheckbox } from "@material-ui/core/Checkbox"
+import {
+    Stack,
+    StackProperties,
+    addPropertyControls,
+    ControlType,
+} from "framer"
+import {
+    default as MuiCheckbox,
+    CheckboxProps,
+    //@ts-ignore
+} from "@material-ui/core/Checkbox"
 
-//Create component and return it
-export function Checkbox(props) {
-    const [state, setState] = React.useState({ checked: false })
-
-    const handleChange = (name: string) => (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        if (props.onChange) props.onChange(event)
-        setState({ ...state, [name]: event.target.checked })
+type Props = Partial<StackProperties> &
+    CheckboxProps & {
+        color: any
+        size: any
+        variant: any
     }
 
+//Create component and return it
+export function Checkbox(props: Props) {
+    const { checked, color, disabled, onChange, disableRipple, ...rest } = props
+
+    const [state, setState] = React.useState({ checked })
+
     React.useEffect(() => {
-        setState(props)
-    }, [props])
+        setState({ checked })
+    }, [checked])
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange && onChange(event)
+        setState({ ...state, checked: event.target.checked })
+    }
 
     return (
-        <Frame
-            width={props.width}
-            height={props.height}
-            style={{
-                alignItems: "center",
-                display: "flex",
-                justifyContent: "center",
-                background: "transparent",
-            }}
+        <Stack
+            {...rest}
+            alignment="center"
+            distribution="center"
+            overflow="visible"
         >
             <MuiCheckbox
+                {...{
+                    color,
+                    disabled,
+                    onChange,
+                    disableRipple,
+                }}
                 checked={state.checked}
-                color={props.color}
-                disabled={props.disabled}
-                disableRipple={props.disableRipple}
-                onChange={handleChange("checked")}
-                value="checked"
+                onChange={handleChange}
                 inputProps={{
                     "aria-label": "primary Checkbox",
                 }}
             />
-        </Frame>
+        </Stack>
     )
 }
 
@@ -52,16 +65,15 @@ Checkbox.defaultProps = {
     disabled: false,
     checked: false,
     disableRipple: false,
+    readOnly: false,
     value: "checked",
 }
 
 //Create property controls to expose properties in the canvas
 addPropertyControls(Checkbox, {
-    text: { type: ControlType.String, title: "Text" },
     checked: {
         type: ControlType.Boolean,
         title: "Checked",
-        defaultValue: false,
         enabledTitle: "True",
         disabledTitle: "False",
     },
@@ -70,6 +82,7 @@ addPropertyControls(Checkbox, {
         title: "Color",
         options: ["primary", "secondary", "default"],
         optionTitles: ["Primary", "Secondary", "Default"],
+        defaultValue: "primary",
     },
     disabled: {
         type: ControlType.Boolean,
